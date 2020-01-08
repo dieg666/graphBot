@@ -94,6 +94,26 @@ class botGraph:
     def getAnswerStr(self, answerList):
         return " ".join(answerList)
 
+    def getAlternatives(self, answer):
+        alternativas = []
+        for i in self.Graph[self.actualQuestion]:
+            if self.Graph[self.actualQuestion][i]['color'] == 'green':
+                alternativas.append(i)
+        for alternativa in alternativas:
+            if self.Graph[self.actualQuestion][alternativa]['labelAlternativa'] == answer:
+                self.queueQuestions.insert(0, alternativa)
+                return True
+        return False
+
+    def getAnswers(self):
+        # nSuccessors = len(self.Graph[self.actualQuestion])
+        answers = None
+        for i in self.Graph[self.actualQuestion]:
+            if self.Graph[self.actualQuestion][i]['color'] == 'blue':
+                answers = self.answers[i]
+                break
+        return answers
+
     # Messages
     def start(self, update, context):
         first_Name = update.message.from_user['first_name']
@@ -135,15 +155,6 @@ class botGraph:
             message = message + "\n🔷 "+IDQuizz
         update.message.reply_text(text=message)
 
-    def getAnswers(self):
-        # nSuccessors = len(self.Graph[self.actualQuestion])
-        answers = None
-        for i in self.Graph[self.actualQuestion]:
-            if self.Graph[self.actualQuestion][i]['color'] == 'blue':
-                answers = self.answers[i]
-                break
-        return answers
-
     def quizAuxiliar(self, update, context):
         # se checkea el END y rompe la recursividad
         self.actualQuestion = self.queueQuestions[0]
@@ -180,17 +191,6 @@ class botGraph:
         update.message.reply_text(text="Quiz " + self.actualQuiz)
         # ataca a las futuras preguntas
         self.quizAuxiliar(update, context)
-
-    def getAlternatives(self, answer):
-        alternativas = []
-        for i in self.Graph[self.actualQuestion]:
-            if self.Graph[self.actualQuestion][i]['color'] == 'green':
-                alternativas.append(i)
-        for alternativa in alternativas:
-            if self.Graph[self.actualQuestion][alternativa]['labelAlternativa'] == answer:
-                self.queueQuestions.insert(0, alternativa)
-                return True
-        return False
 
     def button(self, update, context):
         query = update.callback_query
