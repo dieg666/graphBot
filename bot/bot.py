@@ -5,6 +5,7 @@ import pickle as pk
 from os import path
 import logging
 import matplotlib.pyplot as plt
+import random
 # loading the access token from token.txt
 # defining callback function for the /start command
 logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
@@ -24,6 +25,7 @@ class botGraph:
         self.dictQA = {}
         self.queueQuestions = []
         self.statsQuiz = {}
+        self.idActualQuiz = None
 
     def restartValues(self, actualQuiz):
         self.actualQuiz = actualQuiz
@@ -84,7 +86,7 @@ class botGraph:
         for idAnswer, answer in answers:
             keyboard = keyboard + [[InlineKeyboardButton(
                 str(idAnswer)+": "+self.getAnswerStr(answer),
-                callback_data=str(idAnswer))]]
+                callback_data=str(self.idActualQuiz)+"|"+str(idAnswer))]]
             it = it + 1
         return keyboard
 
@@ -134,12 +136,12 @@ class botGraph:
             "🔷 /author - info about author\n" +
             "🔷 /getIDQuizzes - get the ID of all the quizzes\n" +
             "🔷 /quiz _idQuiz_ - start the Quiz with ID _idQuiz_\n" +
-            " When you finish answering the quiz you can:\n" +
+            " When you finish answering the quiz you should try:\n" +
             "🔷 /getIDQuestions - get the ID of all the questions\n" +
             "🔷 /bar _idQuestion_ - display a bar graphic with stats about _idQuestion_\n" +
             "🔷 /pie _idQuestion_ - display a pie graphic with stats about _idQuestion_\n" +
             "🔷 /report - get a text based report with stats about all questions\n" +
-            "🔷 /exitQuiz - exit Quiz ", parse_mode='Markdown')
+            "🔷 /graphGenerated - you get the generated graph with given Quiz ", parse_mode='Markdown')
 
     def author(self, update, context):
         update.message.reply_text(
@@ -156,7 +158,7 @@ class botGraph:
         update.message.reply_text(text=message)
 
     def quizAuxiliar(self, update, context):
-        # se checkea el END y rompe la recursividad
+        # se checkea el END y guarda las estadísticas
         self.actualQuestion = self.queueQuestions[0]
         if self.actualQuestion == 'END':
             self.saveStats()
@@ -176,6 +178,8 @@ class botGraph:
             reply_markup=reply_markup,
             text=questionParsed,
             parse_mode='Markdown')
+        # print("--------------")
+        # print(a)
         # guardo el estado del update para volver a enviar
         self.updateAux = update
         # se  la siguiente pregunta
@@ -185,6 +189,8 @@ class botGraph:
                 break
 
     def quiz(self, update, context):
+        # print(context)
+        self.idActualQuiz = random.randrange(666666)
         response = update.message.text[6:]
         # repone las variables
         self.restartValues(response)
@@ -193,11 +199,21 @@ class botGraph:
         self.quizAuxiliar(update, context)
 
     def button(self, update, context):
+        # if self.updateAux.update_id == self.id:
+        #     print ("es correcto")
+        # print(context)
         query = update.callback_query
-        query.edit_message_text(text="Selected option: {}".format(query.data))
-        self.dictQA[self.actualQuestion] = query.data
-        self.getAlternatives(query.data)
-        self.quizAuxiliar(self.updateAux, context)
+        # checkea si el id de la respuesta concuerda con el actual
+        if format(query.data).split("|")[0] == str(self.idActualQuiz):
+            query.data = format(query.data).split("|")[1]
+            query.edit_message_text(text="Selected option: {}".format(query.data))
+            self.dictQA[self.actualQuestion] = query.data
+            self.getAlternatives(query.data)
+            self.quizAuxiliar(self.updateAux, context)
+        else:
+            query.edit_message_text(
+                text="This quiz expired, _trying to fool me?_ 👿",
+                parse_mode='Markdown')
 
     def graphGenerated(self, update, bot):
         bot.bot.send_photo(
@@ -232,21 +248,36 @@ class botGraph:
         plt.clf()
 
     def report(self, update, bot):
-        message = "question idAnswer numberAsnswers"
-        # for question in self.statsQuiz.keys():
-        #   for answer in question[question].keys():
-        #      pass
-        bot.bot.send_message(chat_id=update.message.chat_id, text=message)
+        message = ""
+        for question in self.statsQuiz:
+            for answer in self.statsQuiz[question]:
+                message += "\nQuestion "+question+" and answer "+answer+" has "+str(self.statsQuiz[question][answer])+" votes"
+        if message == "":
+            bot.bot.send_message(
+                chat_id=update.message.chat_id,
+                text='You didn\'t start a quiz yet 😥',
+                parse_mode='Markdown')
+
+        bot.bot.send_message(
+            chat_id=update.message.chat_id,
+            text=message,
+            parse_mode='Markdown')
     # hace falta añadirlo a help
 
     def sendIDQuestions(self, update, bot):
-        sizeQuestion = len(self.Graph.nodes())
-        questionPlural = "question" if sizeQuestion == 1 else "questions"
-        message = "You have "+str(sizeQuestion)+" "+questionPlural+":"
-        for question in list(self.Graph.nodes(data='question')):
-            if question[1]:
-                message = message + "\n🔷 "+str(question[0])
-        bot.bot.send_message(chat_id=update.message.chat_id, text=message)
+        if self.Graph is None:
+            bot.bot.send_message(
+                chat_id=update.message.chat_id,
+                text='You didn\'t start a quiz yet 😥',
+                parse_mode='Markdown')
+        else:
+            sizeQuestion = len(self.Graph.nodes())
+            questionPlural = "question" if sizeQuestion == 1 else "questions"
+            message = "You have "+str(sizeQuestion)+" "+questionPlural+":"
+            for question in list(self.Graph.nodes(data='question')):
+                if question[1]:
+                    message = message + "\n🔷 "+str(question[0])
+            bot.bot.send_message(chat_id=update.message.chat_id, text=message)
 
 
 if __name__ == "__main__":
