@@ -140,9 +140,9 @@ class botGraph:
             "🔷 /bar _idQuestion_ - display a bar graphic with stats about _idQuestion_\n" +
             "🔷 /pie _idQuestion_ - display a pie graphic with stats about _idQuestion_\n" +
             "🔷 /report - get a text based report with stats about all questions\n" +
-            "🔷 /graphGenerated - you get the generated graph with given Quiz\n"+
-            "👉 also check /quiz _idQuiz_ for starting another quiz!"
-            , parse_mode='Markdown')
+            "🔷 /graphGenerated - you get the generated graph with given Quiz\n" +
+            "👉 also check /quiz _idQuiz_ for starting another quiz!",
+            parse_mode='Markdown')
 
     def author(self, update, context):
         update.message.reply_text(
@@ -307,6 +307,8 @@ class botGraph:
 
 
 if __name__ == "__main__":
+    print(installed_packages_list)
+    plt.clf()
     # call main Telegram objects
     TOKEN = open('token.txt').read().strip()
     updater = Updater(token=TOKEN, use_context=True)
