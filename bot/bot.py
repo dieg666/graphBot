@@ -39,7 +39,7 @@ class botGraph:
 
     # HANDLERS
     def getLocalIDQuizzes(self):
-        pickleQuizzesIDs = open("../GeneratedEnquestes/QuizzesIDs.pickle", "rb")
+        pickleQuizzesIDs = open("../GeneratedEnquestes/0QuizzesIDs.pickle", "rb")
         idQuizzes = pk.load(pickleQuizzesIDs)
         pickleQuizzesIDs.close()
         return idQuizzes
@@ -307,7 +307,6 @@ class botGraph:
 
 
 if __name__ == "__main__":
-    print(installed_packages_list)
     plt.clf()
     # call main Telegram objects
     TOKEN = open('token.txt').read().strip()

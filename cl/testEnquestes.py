@@ -23,7 +23,7 @@ idEnquesta = visitor.getStartNode()
 # questions = nx.get_node_attributes(G,'question')
 # print(list(questions.keys()))
 nx.write_gpickle(G, "../GeneratedEnquestes/"+idEnquesta+".pickle")
-pathQuizzesIDs = "../GeneratedEnquestes/QuizzesIDs.pickle"
+pathQuizzesIDs = "../GeneratedEnquestes/0QuizzesIDs.pickle"
 if not path.exists(pathQuizzesIDs):
     pickleOut = open(pathQuizzesIDs, "wb")
     quizzesIDs = {idEnquesta}
