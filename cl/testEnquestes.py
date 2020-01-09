@@ -22,8 +22,8 @@ G = visitor.visit(tree)
 idEnquesta = visitor.getStartNode()
 # questions = nx.get_node_attributes(G,'question')
 # print(list(questions.keys()))
-nx.write_gpickle(G, "../EnquestesGenerated/"+idEnquesta+".pickle")
-pathQuizzesIDs = "../EnquestesGenerated/QuizzesIDs.pickle"
+nx.write_gpickle(G, "../GeneratedEnquestes/"+idEnquesta+".pickle")
+pathQuizzesIDs = "../GeneratedEnquestes/QuizzesIDs.pickle"
 if not path.exists(pathQuizzesIDs):
     pickleOut = open(pathQuizzesIDs, "wb")
     quizzesIDs = {idEnquesta}

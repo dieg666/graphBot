@@ -39,13 +39,13 @@ class botGraph:
 
     # HANDLERS
     def getLocalIDQuizzes(self):
-        pickleQuizzesIDs = open("../EnquestesGenerated/QuizzesIDs.pickle", "rb")
+        pickleQuizzesIDs = open("../GeneratedEnquestes/QuizzesIDs.pickle", "rb")
         idQuizzes = pk.load(pickleQuizzesIDs)
         pickleQuizzesIDs.close()
         return idQuizzes
 
     def getLocalQuiz(self):
-        pathQuizGraph = "../EnquestesGenerated/"+self.actualQuiz+".pickle"
+        pathQuizGraph = "../GeneratedEnquestes/"+self.actualQuiz+".pickle"
         graph = nx.read_gpickle(pathQuizGraph)
         self.questions = nx.get_node_attributes(graph, 'question')
         self.answers = nx.get_node_attributes(graph, 'answer')
@@ -61,14 +61,14 @@ class botGraph:
 
             else:
                 self.statsQuiz[question] = {self.dictQA[question]: 1}
-        pathStats = "../EnquestesGenerated/Stats/"+self.actualQuiz+".pickle"
+        pathStats = "../GeneratedEnquestes/Stats/"+self.actualQuiz+".pickle"
         pickleOut = open(pathStats, "wb")
         # hace falta tratar
         pk.dump(self.statsQuiz, pickleOut)
         pickleOut.close()
 
     def getLocalStats(self):
-        pathStats = "../EnquestesGenerated/Stats/"+self.actualQuiz+".pickle"
+        pathStats = "../GeneratedEnquestes/Stats/"+self.actualQuiz+".pickle"
         if not path.exists(pathStats):
             pickleOut = open(pathStats, "wb")
             self.statsQuiz = {}
@@ -233,10 +233,10 @@ class botGraph:
         elif response in self.statsQuiz:
             statQuestion = self.statsQuiz[response]
             plt.bar(*zip(*statQuestion.items()))
-            plt.savefig('generatedPlots/'+self.actualQuiz+response+'bar.png')
+            plt.savefig('../GeneratedPlots/'+self.actualQuiz+response+'bar.png')
             bot.bot.send_photo(
                 chat_id=update.message.chat_id,
-                photo=open("generatedPlots/"+self.actualQuiz+response+"bar.png", 'rb'))
+                photo=open("../GeneratedPlots/"+self.actualQuiz+response+"bar.png", 'rb'))
             plt.clf()
         else:
             bot.bot.send_message(
@@ -257,10 +257,10 @@ class botGraph:
             ax1.pie(
                 list(statQuestion.values()), labels=list(statQuestion.keys()), autopct='%1.1f%%')
             ax1.axis('equal')
-            plt.savefig('generatedPlots/'+self.actualQuiz+response+'pie.png')
+            plt.savefig('../GeneratedPlots/'+self.actualQuiz+response+'pie.png')
             bot.bot.send_photo(
                 chat_id=update.message.chat_id,
-                photo=open("generatedPlots/"+self.actualQuiz+response+"pie.png", 'rb'))
+                photo=open("../GeneratedPlots/"+self.actualQuiz+response+"pie.png", 'rb'))
             plt.clf()
         else:
             bot.bot.send_message(
