@@ -191,12 +191,17 @@ class botGraph:
         self.idActualQuiz = random.randrange(666666)
         response = update.message.text[6:]
         # repone las variables
-        self.restartValues(response)
-        update.message.reply_text(
-            text="Starting *Quiz " + self.actualQuiz+"*!",
-            parse_mode='Markdown')
-        # ataca a las futuras preguntas
-        self.quizAuxiliar(update, context)
+        if response in self.IDQuizzes:
+            self.restartValues(response)
+            update.message.reply_text(
+                text="Starting *Quiz " + self.actualQuiz+"*!",
+                parse_mode='Markdown')
+            # ataca a las futuras preguntas
+            self.quizAuxiliar(update, context)
+        else:
+            update.message.reply_text(
+                text='Incorrect IDQuiz 😥, check /getIDQuizzes!',
+                parse_mode='Markdown')
 
     def button(self, update, context):
         query = update.callback_query
