@@ -6,8 +6,7 @@ from os import path
 import logging
 import matplotlib.pyplot as plt
 import random
-# loading the access token from token.txt
-# defining callback function for the /start command
+
 logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
                     level=logging.INFO)
 logger = logging.getLogger(__name__)
@@ -63,7 +62,6 @@ class botGraph:
                 self.statsQuiz[question] = {self.dictQA[question]: 1}
         pathStats = "../GeneratedEnquestes/Stats/"+self.actualQuiz+".pickle"
         pickleOut = open(pathStats, "wb")
-        # hace falta tratar
         pk.dump(self.statsQuiz, pickleOut)
         pickleOut.close()
 
@@ -288,7 +286,6 @@ class botGraph:
                 chat_id=update.message.chat_id,
                 text=message,
                 parse_mode='Markdown')
-    # hace falta añadirlo a help
 
     def sendIDQuestions(self, update, bot):
         if self.Graph is None:
@@ -307,6 +304,7 @@ class botGraph:
 
 
 if __name__ == "__main__":
+    # plt has to be called in main
     plt.clf()
     # call main Telegram objects
     TOKEN = open('token.txt').read().strip()
