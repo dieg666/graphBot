@@ -63,7 +63,6 @@ class botGraph:
                 self.statsQuiz[question] = {self.dictQA[question]: 1}
         pathStats = "../EnquestesGenerated/Stats/"+self.actualQuiz+".pickle"
         pickleOut = open(pathStats, "wb")
-        # print(self.statsQuiz)
         # hace falta tratar
         pk.dump(self.statsQuiz, pickleOut)
         pickleOut.close()
@@ -136,12 +135,14 @@ class botGraph:
             "🔷 /author - info about author\n" +
             "🔷 /getIDQuizzes - get the ID of all the quizzes\n" +
             "🔷 /quiz _idQuiz_ - start the Quiz with ID _idQuiz_\n" +
-            " When you finish answering the quiz you should try:\n" +
+            "\nWhen you finish answering the quiz you should try:\n" +
             "🔷 /getIDQuestions - get the ID of all the questions\n" +
             "🔷 /bar _idQuestion_ - display a bar graphic with stats about _idQuestion_\n" +
             "🔷 /pie _idQuestion_ - display a pie graphic with stats about _idQuestion_\n" +
             "🔷 /report - get a text based report with stats about all questions\n" +
-            "🔷 /graphGenerated - you get the generated graph with given Quiz ", parse_mode='Markdown')
+            "🔷 /graphGenerated - you get the generated graph with given Quiz\n"+
+            "👉 also check /quiz _idQuiz_ for starting another quiz!"
+            , parse_mode='Markdown')
 
     def author(self, update, context):
         update.message.reply_text(
@@ -178,8 +179,6 @@ class botGraph:
             reply_markup=reply_markup,
             text=questionParsed,
             parse_mode='Markdown')
-        # print("--------------")
-        # print(a)
         # guardo el estado del update para volver a enviar
         self.updateAux = update
         # se  la siguiente pregunta
@@ -189,19 +188,17 @@ class botGraph:
                 break
 
     def quiz(self, update, context):
-        # print(context)
         self.idActualQuiz = random.randrange(666666)
         response = update.message.text[6:]
         # repone las variables
         self.restartValues(response)
-        update.message.reply_text(text="Quiz " + self.actualQuiz)
+        update.message.reply_text(
+            text="Starting *Quiz " + self.actualQuiz+"*!",
+            parse_mode='Markdown')
         # ataca a las futuras preguntas
         self.quizAuxiliar(update, context)
 
     def button(self, update, context):
-        # if self.updateAux.update_id == self.id:
-        #     print ("es correcto")
-        # print(context)
         query = update.callback_query
         # checkea si el id de la respuesta concuerda con el actual
         if format(query.data).split("|")[0] == str(self.idActualQuiz):
@@ -228,7 +225,6 @@ class botGraph:
 
     def barr(self, update, bot):
         response = update.message.text[5:]
-        print(self.actualQuestion)
         if self.actualQuiz is None:
             bot.bot.send_message(
                 chat_id=update.message.chat_id,
@@ -247,7 +243,6 @@ class botGraph:
                 chat_id=update.message.chat_id,
                 text='Incorrect IDQuestion 😥, check /getIDQuestions!',
                 parse_mode='Markdown')
-
 
     def pie(self, update, bot):
         response = update.message.text[5:]
