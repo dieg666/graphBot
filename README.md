@@ -19,11 +19,13 @@ Execution example:
 ```
 python testEnquestes.py input2
 ```
+> An example of the input can be found at [here](http://gebakx.github.io/QuizBot/#compilador)
+
 The digraph is saved in folder [GeneratedEnquestes](GeneratedEnquestes) and the representation of it can be found [GeneratedGraphs](GeneratedGraphs) as a png. 
 > Note that the saved data has the id of the Quiz as filename.
 ### Telegram Bot
 ###### This section will show how to execute the Telegram Bot.
-A file was created for the bot: [bot/bot.py](bot.py)
+A file was created for the bot in folder bot: [bot.py](bot/bot.py)
 It handles everything, from inlineKeyboards to getting our pickles local storage... 
 The execution is quite simple:
 ```
@@ -33,7 +35,7 @@ And open [this link](https://t.me/DiegoDelgado_graphBot) to automatically start 
 You can play with the bot in **any way**, commands are reachable from the start.
 > Some commands that were not mandatory were created by mere interest in the project, like /getIDQuizzes, /getIDQuestions or /graphGenerated.
 
-For storing statistics, a dictionary of dictionary was needed. The key of this dictionary is the questionID of the quizz, and the data is a dictionary (with idAnswer as key and data as Int that count the number of answers). It can be found as a pickle in [GeneratedEnquestes/QuizzesIDs.pickle](GeneratedEnquestes/StatsQuizzesIDs.pickle)
+For storing statistics, a dictionary of dictionary was needed. The key of this dictionary is the questionID of the quizz, and the data is a dictionary (with idAnswer as key and data as Int that count the number of answers). It can be found as a pickle in [GeneratedEnquestes/0QuizzesIDs.pickle](GeneratedEnquestes/0QuizzesIDs.pickle)
 
 ## Built With
 * [NeoVim](https://neovim.io/) - Vim-based text editor
