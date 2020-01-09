@@ -226,7 +226,7 @@ class botGraph:
         else:
             bot.bot.send_photo(
                 chat_id=update.message.chat_id,
-                photo=open("../GraphsGenerated/"+self.actualQuiz+".png", 'rb'))
+                photo=open("../GeneratedGraphs/"+self.actualQuiz+".png", 'rb'))
 
     def barr(self, update, bot):
         response = update.message.text[5:]

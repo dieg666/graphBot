@@ -41,4 +41,4 @@ def drawGraph(G, idEnquesta):
     # a = (G['END'])
     # print (a=={})
     # plt.show()
-    plt.savefig("../GraphsGenerated/"+idEnquesta+".png", bbox_inches='tight')
+    plt.savefig("../GeneratedGraphs/"+idEnquesta+".png", bbox_inches='tight')
