@@ -216,36 +216,62 @@ class botGraph:
                 parse_mode='Markdown')
 
     def graphGenerated(self, update, bot):
-        bot.bot.send_photo(
-            chat_id=update.message.chat_id,
-            photo=open("../GraphsGenerated/"+self.actualQuiz+".png", 'rb'))
+        if self.actualQuiz is None:
+            bot.bot.send_message(
+                chat_id=update.message.chat_id,
+                text='You didn\'t start a quiz yet 😥',
+                parse_mode='Markdown')
+        else:
+            bot.bot.send_photo(
+                chat_id=update.message.chat_id,
+                photo=open("../GraphsGenerated/"+self.actualQuiz+".png", 'rb'))
 
     def barr(self, update, bot):
         response = update.message.text[5:]
-        statQuestion = self.statsQuiz[response]
-        # print(statQuestion)
-        plt.bar(*zip(*statQuestion.items()))
-        # plt.xticks(len(statQuestion), statQuestion.keys())
-        plt.savefig('generatedPlots/'+self.actualQuiz+response+'bar.png')
-        bot.bot.send_photo(
-            chat_id=update.message.chat_id,
-            photo=open("generatedPlots/"+self.actualQuiz+response+"bar.png", 'rb'))
-        plt.clf()
+        print(self.actualQuestion)
+        if self.actualQuiz is None:
+            bot.bot.send_message(
+                chat_id=update.message.chat_id,
+                text='You didn\'t start a quiz yet 😥',
+                parse_mode='Markdown')
+        elif response in self.statsQuiz:
+            statQuestion = self.statsQuiz[response]
+            plt.bar(*zip(*statQuestion.items()))
+            plt.savefig('generatedPlots/'+self.actualQuiz+response+'bar.png')
+            bot.bot.send_photo(
+                chat_id=update.message.chat_id,
+                photo=open("generatedPlots/"+self.actualQuiz+response+"bar.png", 'rb'))
+            plt.clf()
+        else:
+            bot.bot.send_message(
+                chat_id=update.message.chat_id,
+                text='Incorrect IDQuestion 😥, check /getIDQuestions!',
+                parse_mode='Markdown')
+
 
     def pie(self, update, bot):
         response = update.message.text[5:]
-        statQuestion = self.statsQuiz[response]
-        fig1, ax1 = plt.subplots()
-        ax1.pie(
-            list(statQuestion.values()), labels=list(statQuestion.keys()), autopct='%1.1f%%')
-        # print(statQuestion)
-        ax1.axis('equal')
-        # plt.xticks(len(statQuestion), statQuestion.keys())
-        plt.savefig('generatedPlots/'+self.actualQuiz+response+'pie.png')
-        bot.bot.send_photo(
-            chat_id=update.message.chat_id,
-            photo=open("generatedPlots/"+self.actualQuiz+response+"pie.png", 'rb'))
-        plt.clf()
+        if self.actualQuiz is None:
+            bot.bot.send_message(
+                chat_id=update.message.chat_id,
+                text='You didn\'t start a quiz yet 😥',
+                parse_mode='Markdown')
+        elif response in self.statsQuiz:
+            statQuestion = self.statsQuiz[response]
+            fig1, ax1 = plt.subplots()
+            ax1.pie(
+                list(statQuestion.values()), labels=list(statQuestion.keys()), autopct='%1.1f%%')
+            ax1.axis('equal')
+            plt.savefig('generatedPlots/'+self.actualQuiz+response+'pie.png')
+            bot.bot.send_photo(
+                chat_id=update.message.chat_id,
+                photo=open("generatedPlots/"+self.actualQuiz+response+"pie.png", 'rb'))
+            plt.clf()
+        else:
+            bot.bot.send_message(
+                chat_id=update.message.chat_id,
+                text='Incorrect IDQuestion 😥, check /getIDQuestions!',
+                parse_mode='Markdown')
 
     def report(self, update, bot):
         message = ""
@@ -257,11 +283,11 @@ class botGraph:
                 chat_id=update.message.chat_id,
                 text='You didn\'t start a quiz yet 😥',
                 parse_mode='Markdown')
-
-        bot.bot.send_message(
-            chat_id=update.message.chat_id,
-            text=message,
-            parse_mode='Markdown')
+        else:
+            bot.bot.send_message(
+                chat_id=update.message.chat_id,
+                text=message,
+                parse_mode='Markdown')
     # hace falta añadirlo a help
 
     def sendIDQuestions(self, update, bot):
@@ -271,7 +297,7 @@ class botGraph:
                 text='You didn\'t start a quiz yet 😥',
                 parse_mode='Markdown')
         else:
-            sizeQuestion = len(self.Graph.nodes())
+            sizeQuestion = len(self.questions)
             questionPlural = "question" if sizeQuestion == 1 else "questions"
             message = "You have "+str(sizeQuestion)+" "+questionPlural+":"
             for question in list(self.Graph.nodes(data='question')):
