@@ -20,8 +20,6 @@ tree = parser.botGraph()
 visitor = EnquestesVisitor()
 G = visitor.visit(tree)
 idEnquesta = visitor.getStartNode()
-# questions = nx.get_node_attributes(G,'question')
-# print(list(questions.keys()))
 nx.write_gpickle(G, "../GeneratedEnquestes/"+idEnquesta+".pickle")
 pathQuizzesIDs = "../GeneratedEnquestes/0QuizzesIDs.pickle"
 if not path.exists(pathQuizzesIDs):
@@ -37,6 +35,4 @@ else:
     quizzesIDs.add(idEnquesta)
     pk.dump(quizzesIDs, pickleOut)
     pickleOut.close()
-    # print (quizzesIDs)
-# idQuizzes = pickle
 drawGraph(G, idEnquesta)

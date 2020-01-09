@@ -36,9 +36,4 @@ def drawGraph(G, idEnquesta):
             pos,
             labels,
             font_size=10)
-    # a = nx.get_node_attributes(G, 'answer')
-    # print (a['R1'])
-    # a = (G['END'])
-    # print (a=={})
-    # plt.show()
     plt.savefig("../GeneratedGraphs/"+idEnquesta+".png", bbox_inches='tight')
