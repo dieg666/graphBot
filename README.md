@@ -21,12 +21,12 @@ python testEnquestes.py input2
 ```
 > An example of the input can be found at [here](http://gebakx.github.io/QuizBot/#compilador)
 
-The digraph is saved in folder [GeneratedEnquestes](GeneratedEnquestes) and the representation of it can be found [GeneratedGraphs](GeneratedGraphs) as a png. 
+The digraph is saved in folder [GeneratedData/GeneratedEnquestes](GeneratedData/GeneratedEnquestes) and the representation of it can be found [GeneratedData/GeneratedGraphs](GeneratedData/GeneratedGraphs) as a png. 
 > Note that the saved data has the id of the Quiz as filename.
 ### Telegram Bot
 ###### This section will show how to execute the Telegram Bot.
 A file was created for the bot in folder bot: [bot.py](bot/bot.py)
-It handles everything, from inlineKeyboards to getting our pickles local storage... 
+It handles everything, from inlineKeyboards to getting our local pickles... 
 The execution is quite simple:
 ```
 python bot.py
@@ -35,7 +35,7 @@ And open [this link](https://t.me/DiegoDelgado_graphBot) to automatically start 
 You can play with the bot in **any way**, commands are reachable from the start.
 > Some commands that were not mandatory were created by mere interest in the project, like /getIDQuizzes, /getIDQuestions or /graphGenerated.
 
-For storing statistics, a dictionary of dictionary was needed. The key of this dictionary is the questionID of the quizz, and the data is a dictionary (with idAnswer as key and data as Int that count the number of answers). It can be found as a pickle in [GeneratedEnquestes/0QuizzesIDs.pickle](GeneratedEnquestes/0QuizzesIDs.pickle)
+For storing statistics, a dictionary of dictionaries was needed. The key of this dictionary is the questionID of the quizz, and the data is a dictionary (with idAnswer as key and data as Int that count the number of answers). It can be found as a pickle in [GeneratedData/GeneratedEnquestes/0QuizzesIDs.pickle](GeneratedData/GeneratedEnquestes/0QuizzesIDs.pickle)
 
 ## Built With
 * [NeoVim](https://neovim.io/) - Vim-based text editor
@@ -44,6 +44,7 @@ For storing statistics, a dictionary of dictionary was needed. The key of this d
 
 ### Some improvements that can be done
 - [ ] Lock the file with the statistics when the user needs it, so in case another user also has to use it, there are no data racing problems.
+- [ ] Find a better way than storing the plots when user asks /pie IDQuestion. Delete the file when no one needs it can be a solution, but I hope for a better answer.
 
 ## Author
 * **Diego Delgado** - [@diegexe](https://github.com/diegexe)
