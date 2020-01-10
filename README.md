@@ -3,7 +3,7 @@
 This work can be splitted in two sub-projects:
   * **Compilator**:
     * A new language for creating quizzes is generated.
-    * When creating a new quiz, a digraph is locally saved (also the image representation of it). This graph contains all the quiz information.
+    * When creating a new quiz with our new language, a digraph is locally saved (also the image representation of it). This graph contains all the quiz information necessary.
   * **Telegram Bot**:
     * A Telegram bot that retrieves the data generated in the Compilator part and handles the generated quizzes, asking to user questions with given answers. Also stores locally all the given answers, and gives textual and images based statistics
 ### Perequisites
@@ -41,6 +41,7 @@ For storing statistics, a dictionary of dictionaries was needed. The key of this
 * [NeoVim](https://neovim.io/) - Vim-based text editor
 * [Python 3.8](https://www.python.org/downloads/release/python-380) - Programming language
 * [ANTLR4](https://github.com/antlr/antlr4/blob/master/doc/python-target.md) - (ANother Tool for Language Recognition)
+* [Camel ]
 
 ### Some improvements that can be done
 - [ ] Lock the file with the statistics when the user needs it, so in case another user also has to use it, there are no data racing problems.
