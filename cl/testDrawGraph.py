@@ -36,4 +36,4 @@ def drawGraph(G, idEnquesta):
             pos,
             labels,
             font_size=10)
-    plt.savefig("../GeneratedGraphs/"+idEnquesta+".png", bbox_inches='tight')
+    plt.savefig("../GeneratedData/GeneratedGraphs/"+idEnquesta+".png", bbox_inches='tight')

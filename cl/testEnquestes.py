@@ -20,8 +20,8 @@ tree = parser.botGraph()
 visitor = EnquestesVisitor()
 G = visitor.visit(tree)
 idEnquesta = visitor.getStartNode()
-nx.write_gpickle(G, "../GeneratedEnquestes/"+idEnquesta+".pickle")
-pathQuizzesIDs = "../GeneratedEnquestes/0QuizzesIDs.pickle"
+nx.write_gpickle(G, "../GeneratedData/GeneratedEnquestes/"+idEnquesta+".pickle")
+pathQuizzesIDs = "../GeneratedData/0QuizzesIDs.pickle"
 if not path.exists(pathQuizzesIDs):
     pickleOut = open(pathQuizzesIDs, "wb")
     quizzesIDs = {idEnquesta}

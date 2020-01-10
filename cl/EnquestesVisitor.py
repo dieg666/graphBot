@@ -39,7 +39,6 @@ class EnquestesVisitor(ParseTreeVisitor):
                 color="black",
                 labelAlternativa="",
                 labelItem="")
-            # aquí se puede gestionar el error de si la pregunta existe/no tiene pareja)
             first = self.items[ll[i].getText()]
         self.AST.add_edge(
             first,
@@ -74,7 +73,6 @@ class EnquestesVisitor(ParseTreeVisitor):
         for i in range(3, n):
             answerID, resposta = self.visit(ll[i])
             textAnswer.append((answerID, resposta))
-        # print(textAnswer)
         self.AST.add_node(
             ll[0].getText(),
             answer=textAnswer)

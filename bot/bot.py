@@ -38,13 +38,13 @@ class botGraph:
 
     # HANDLERS
     def getLocalIDQuizzes(self):
-        pickleQuizzesIDs = open("../GeneratedEnquestes/0QuizzesIDs.pickle", "rb")
+        pickleQuizzesIDs = open("../GeneratedData/GeneratedEnquestes/0QuizzesIDs.pickle", "rb")
         idQuizzes = pk.load(pickleQuizzesIDs)
         pickleQuizzesIDs.close()
         return idQuizzes
 
     def getLocalQuiz(self):
-        pathQuizGraph = "../GeneratedEnquestes/"+self.actualQuiz+".pickle"
+        pathQuizGraph = "../GeneratedData/GeneratedEnquestes/"+self.actualQuiz+".pickle"
         graph = nx.read_gpickle(pathQuizGraph)
         self.questions = nx.get_node_attributes(graph, 'question')
         self.answers = nx.get_node_attributes(graph, 'answer')
@@ -60,13 +60,13 @@ class botGraph:
 
             else:
                 self.statsQuiz[question] = {self.dictQA[question]: 1}
-        pathStats = "../GeneratedEnquestes/Stats/"+self.actualQuiz+".pickle"
+        pathStats = "../GeneratedData/GeneratedEnquestes/Stats/"+self.actualQuiz+".pickle"
         pickleOut = open(pathStats, "wb")
         pk.dump(self.statsQuiz, pickleOut)
         pickleOut.close()
 
     def getLocalStats(self):
-        pathStats = "../GeneratedEnquestes/Stats/"+self.actualQuiz+".pickle"
+        pathStats = "../GeneratedData/GeneratedEnquestes/Stats/"+self.actualQuiz+".pickle"
         if not path.exists(pathStats):
             pickleOut = open(pathStats, "wb")
             self.statsQuiz = {}
@@ -105,7 +105,6 @@ class botGraph:
         return False
 
     def getAnswers(self):
-        # nSuccessors = len(self.Graph[self.actualQuestion])
         answers = None
         for i in self.Graph[self.actualQuestion]:
             if self.Graph[self.actualQuestion][i]['color'] == 'blue':
@@ -166,10 +165,8 @@ class botGraph:
         # questionParsed el es mensaje que se envía
         questionRaw = self.questions[self.actualQuestion]
         questionParsed = self.getQuestionStr(questionRaw)
-
         # conseguimos las respuestas
         answers = self.getAnswers()
-
         # con las respuestas se consigue un teclado tipo inline
         keyboard = self.getKeyboardInline(answers)
         reply_markup = InlineKeyboardMarkup(keyboard)
@@ -224,7 +221,7 @@ class botGraph:
         else:
             bot.bot.send_photo(
                 chat_id=update.message.chat_id,
-                photo=open("../GeneratedGraphs/"+self.actualQuiz+".png", 'rb'))
+                photo=open("../GeneratedData/GeneratedGraphs/"+self.actualQuiz+".png", 'rb'))
 
     def barr(self, update, bot):
         response = update.message.text[5:]
@@ -236,10 +233,10 @@ class botGraph:
         elif response in self.statsQuiz:
             statQuestion = self.statsQuiz[response]
             plt.bar(*zip(*statQuestion.items()))
-            plt.savefig('../GeneratedPlots/'+self.actualQuiz+response+'bar.png')
+            plt.savefig('../GeneratedData/GeneratedPlots/'+self.actualQuiz+response+'bar.png')
             bot.bot.send_photo(
                 chat_id=update.message.chat_id,
-                photo=open("../GeneratedPlots/"+self.actualQuiz+response+"bar.png", 'rb'))
+                photo=open("../GeneratedData/GeneratedPlots/"+self.actualQuiz+response+"bar.png", 'rb'))
             plt.clf()
         else:
             bot.bot.send_message(
@@ -260,10 +257,10 @@ class botGraph:
             ax1.pie(
                 list(statQuestion.values()), labels=list(statQuestion.keys()), autopct='%1.1f%%')
             ax1.axis('equal')
-            plt.savefig('../GeneratedPlots/'+self.actualQuiz+response+'pie.png')
+            plt.savefig('../GeneratedData/GeneratedPlots/'+self.actualQuiz+response+'pie.png')
             bot.bot.send_photo(
                 chat_id=update.message.chat_id,
-                photo=open("../GeneratedPlots/"+self.actualQuiz+response+"pie.png", 'rb'))
+                photo=open("../GeneratedData/GeneratedPlots/"+self.actualQuiz+response+"pie.png", 'rb'))
             plt.clf()
         else:
             bot.bot.send_message(
